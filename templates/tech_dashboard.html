@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>የጥገና ባለሙያ ዳሽቦርድ (Technician Panel)</h2>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">ውጣ</a>
+</div>
+
+<h4>የመጡ የጥገና ጥያቄዎች</h4>
+<table class="table table-striped bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ተጠቃሚ</th>
+            <th>PC ID</th>
+            <th>ችግር</th>
+            <th>የአሁኑ ሁኔታ</th>
+            <th>ምላሽ መስጫ</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tickets %}
+        <tr>
+            <td>{{ t.author.username }}</td>
+            <td>{{ t.pc_number }}</td>
+            <td>{{ t.issue_description }}</td>
+            <td><span class="badge bg-warning text-dark">{{ t.status }}</span></td>
+            <td>
+                <form method="POST" class="d-flex gap-2">
+                    <input type="hidden" name="ticket_id" value="{{ t.id }}">
+                    <input type="text" name="response" class="form-control form-control-sm" placeholder="ምላሽ ጻፍ..." required>
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="In Progress">እየተሰራ ነው</option>
+                        <option value="Fixed">ተሰርቷል (Fixed)</option>
+                        <option value="Rejected">አይሰራም</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-sm">ላክ</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

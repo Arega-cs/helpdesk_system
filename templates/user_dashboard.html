@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>የጥገና ጥያቄ ማቅረቢያ</h2>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">logout</a>
+</div>
+
+<div class="card p-3 mb-4 shadow-sm">
+    <h4>አዲስ የብልሽት ጥያቄ ያስገቡ</h4>
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">የብልሽቱ ዓይነት (Issue Type)</label>
+            <select name="issue_type" class="form-select">
+                <option value="Hardware">hardware problem (RAM, Monitor, Keyboard...)</option>
+                <option value="Software">software problem (OS, App Installation...)</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">የኮምፒውተር መለያ / PC ID</label>
+            <input type="text" name="pc_number" class="form-control" placeholder="ምሳሌ: LAB-01-PC05" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">የችግሩ ዝርዝር (Issue Description)</label>
+            <textarea name="issue" class="form-control" rows="3" placeholder="ያጋጠመውን ብልሽት ያብራሩ..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">send the question</button>
+    </form>
+</div>
+
+<h4>የቀደሙ ጥያቄዎችዎ እና የተሰጡ ምላሾች</h4>
+<table class="table table-bordered bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>PC ID</th>
+            <th>የብልሽት ዓይነት</th>
+            <th>ያጋጠመው ችግር</th>
+            <th>ሁኔታ (Status)</th>
+            <th>ከባለሙያ የተሰጠ ምላሽ</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tickets %}
+        <tr>
+            <td>{{ t.pc_number }}</td>
+            <td><span class="badge bg-info text-dark">{{ t.issue_type }}</span></td>
+            <td>{{ t.issue_description }}</td>
+            <td><span class="badge bg-secondary">{{ t.status }}</span></td>
+            <td><b>{{ t.response }}</b></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
