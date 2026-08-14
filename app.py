@@ -16,11 +16,10 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-with app.app_context():
-    db.create_all()
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+
+# ----------------------------------------------------
+# 1. DATABASE MODELS (ከ db.create_all በፊት መቀመጥ አለባቸው)
+# ----------------------------------------------------
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +38,20 @@ class Ticket(db.Model):
     response = db.Column(db.Text, default='ገና ምላሽ አልተሰጠም')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+# ----------------------------------------------------
+# 2. CREATE TABLES (ከ Models በኋላ መቀመጥ አለበት)
+# ----------------------------------------------------
+with app.app_context():
+    db.create_all()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# ----------------------------------------------------
+# 3. ROUTES
+# ----------------------------------------------------
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
@@ -66,7 +79,7 @@ def register():
         new_user = User(username=username, password=password, role=role)
         db.session.add(new_user)
         db.session.commit()
-        flash('አካውንትዎ በትክክል ተፈጥሯል! አሁን መግባት ይችላሉ።')
+        flash('አካውንትዎ በተሳካ ሁኔታ ተፈጥሯል! አሁን መግባት ይችላሉ።')
         return redirect(url_for('login'))
     return render_template('register.html')
 
@@ -127,6 +140,4 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
