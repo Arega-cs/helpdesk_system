@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - IT Helpdesk</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        label { font-weight: bold; display: block; margin-top: 10px; color: #555; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; background-color: #007bff; color: white; padding: 10px; border: none; border-radius: 5px; font-size: 16px; margin-top: 20px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .link { text-align: center; margin-top: 15px; font-size: 14px; }
+        .link a { color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>አዲስ አካውንት መመዝገቢያ</h2>
+        <form action="/register" method="POST">
+            <label>የተጠቃሚ ስም (Username)</label>
+            <input type="text" name="username" required>
+
+            <label>ፓስወርድ (Password)</label>
+            <input type="password" name="password" required>
+
+            <label>ሚና (Role)</label>
+            <select name="role">
+                <option value="user">User</option>
+                <option value="technician">Technician</option>
+            </select>
+
+            <button type="submit">መዝግብ (Register)</button>
+        </form>
+        <div class="link">
+            አካውንት አለዎት? <a href="/login">ወደ Login ተመለስ</a>
+        </div>
+    </div>
+</body>
+</html>
